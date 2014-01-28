@@ -1,0 +1,21 @@
+ent_brush
+{
+	animation_state StaticDirt
+	cb_height 1
+	cb_width 1
+	dim_height 1
+	dim_width 13
+	position_angle 0
+	position_x -2
+	position_y -4
+}
+global_properties
+{
+	position_fall_death -25
+}
+ent_player
+{
+	position_angle 0
+	position_x -0.5
+	position_y -2
+}

@@ -1,0 +1,13 @@
+# Brush animation definition.
+
+animation StaticGrass
+	Assets/Materials/Brush/brush_grass.png 0
+end
+
+animation StaticDirt
+	Assets/Materials/Brush/brush_grass.png 0
+end
+
+animation StaticBrick
+	Assets/Materials/Brush/brush_grass.png 0
+end

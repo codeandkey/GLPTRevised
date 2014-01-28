@@ -1,0 +1,6 @@
+# Player main animation definition.
+
+animation Idle
+	Assets/Materials/Player/player_idle_01.png 1000
+	Assets/Materials/Player/player_idle_02.png 1000
+end
