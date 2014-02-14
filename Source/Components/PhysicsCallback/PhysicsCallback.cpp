@@ -10,6 +10,12 @@ float32 PhysicsCallback::ReportFixture(b2Fixture* fixture, const b2Vec2& point, 
 	return fraction;
 }
 
+bool PhysicsCallback::ReportFixture(b2Fixture* fixture) {
+	fixture_buffer.push_back(fixture);
+
+	return query_callback_mode;
+}
+
 PhysicsObject* PhysicsCallback::ObjectLineCollision(float x1, float y1, float x2, float y2) {
 	b2RayCastInput raycast_input;
 	
@@ -24,6 +30,20 @@ PhysicsObject* PhysicsCallback::ObjectLineCollision(float x1, float y1, float x2
 	if (!recent_closest_raycast) return NULL;
 
 	return (PhysicsObject*) recent_closest_raycast->GetUserData();
+}
+
+int PhysicsCallback::ObjectBoxCollision(float x, float y, float w, float h, b2Fixture* locate_object) {
+	fixture_buffer.clear();
+	query_callback_mode = (bool) locate_object;
+
+	b2AABB area;
+
+	area.lowerBound = b2Vec2(x - w, y - h);
+	area.upperBound = b2Vec2(x + w, y + h);
+
+	Tasks::PhysicsController::Handle()->QueryWorld(area, this);
+
+	return fixture_buffer.size();
 }
 
 bool PhysicsCallback::ObjectPointCollision(PhysicsObject* object,float x, float y) {

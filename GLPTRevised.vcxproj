@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Actions\AnimatedSprite\AnimatedSprite.cpp" />
     <ClCompile Include="Source\Actions\PhysBox\PhysBox.cpp" />
+    <ClCompile Include="Source\Actions\PhysSensor\PhysSensor.cpp" />
     <ClCompile Include="Source\Components\PhysicsCallback\PhysicsCallback.cpp" />
     <ClCompile Include="Source\Components\PhysicsObject\PhysicsObject.cpp" />
     <ClCompile Include="Source\Entities\Brush\Brush.cpp" />
@@ -30,6 +31,8 @@
     <ClInclude Include="Source\Actions\ActionModule.h" />
     <ClInclude Include="Source\Actions\AnimatedSprite\AnimatedSprite.h" />
     <ClInclude Include="Source\Actions\PhysBox\PhysBox.h" />
+    <ClInclude Include="Source\Actions\PhysCircle\PhysCircle.h" />
+    <ClInclude Include="Source\Actions\PhysSensor\PhysSensor.h" />
     <ClInclude Include="Source\Components\PhysicsCallback\PhysicsCallback.h" />
     <ClInclude Include="Source\Components\PhysicsObject\PhysicsObject.h" />
     <ClInclude Include="Source\Entities\Brush\Brush.h" />
@@ -47,6 +50,10 @@
     <ClInclude Include="Source\Tasks\TaskModule.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Shaders\post_shader_bloom.hlsl">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
     <FxCompile Include="Assets\Shaders\world_shader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

@@ -27,6 +27,13 @@ namespace Tasks {
 		Neptune::Graphics::Shader<>* GetShader(std::string target_shader_name);
 
 	private:
+		void RenderThroughPipeline(void);
+
+		Neptune::Resource::Texture* render_target_texture_01;
+		Neptune::Resource::Texture* render_target_texture_02;
+
+		Neptune::Resource::Primitive<>* screen_primitive;
+
 		std::map<std::string,Neptune::Graphics::Shader<>*> shader_map;
 
 		bool debug_overlay;

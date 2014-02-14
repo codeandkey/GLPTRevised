@@ -9,9 +9,9 @@ struct Pixel {
 };
 
 SamplerState linear_sampler {
-	Filter=MIN_MAG_MIP_POINT;
+	Filter=ANISOTROPIC;
 	AddressU=Wrap;
-	AddressV=Wrap;
+	AddressV=Clamp;
 };
 
 BlendState blend_normal {

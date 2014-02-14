@@ -57,6 +57,9 @@
     <ClCompile Include="Source\Tasks\ViewController\ViewController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Actions\PhysSensor\PhysSensor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GLPT.h">
@@ -89,9 +92,6 @@
     <ClInclude Include="Source\Actions\AnimatedSprite\AnimatedSprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Actions\ActionModule.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Tasks\PhysicsController\PhysicsController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -113,6 +113,15 @@
     <ClInclude Include="Source\Misc\ParamFetch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Actions\ActionModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actions\PhysSensor\PhysSensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actions\PhysCircle\PhysCircle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shaders\world_shader.hlsl" />
@@ -122,5 +131,6 @@
     <None Include="Config\GLPT_graphics.cfg" />
     <None Include="Config\GLPT_controls.cfg" />
     <None Include="Source\Tasks\ViewController\ViewController.h" />
+    <None Include="Assets\Shaders\post_shader_bloom.hlsl" />
   </ItemGroup>
 </Project>

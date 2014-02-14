@@ -14,6 +14,10 @@ PhysBox::PhysBox(PhysBox::PhysBoxDesc phys_desc) {
 	phys_object_handle->SetRotation(0.0f);
 }
 
+PhysBox::PhysBox(void) {
+	phys_object_handle = NULL;
+}
+
 PhysBox::~PhysBox(void) {
 	if (phys_object_handle) delete phys_object_handle;
 }
@@ -105,11 +109,22 @@ void PhysBox::RotationalPush(float strength) {
 }
 
 void PhysBox::SpecialHook(void* data) {
+	phys_object_handle = new Components::PhysicsObject;
 
 	std::map<std::string, std::string> map_object = *((std::map<std::string, std::string>*) data);
 
+	float width = Misc::ParamFetch::Fetch<float, PhysBox>(map_object, "dim_width");
+	float height = Misc::ParamFetch::Fetch<float, PhysBox>(map_object, "dim_height");
+
 	float x_position = Misc::ParamFetch::Fetch<float, PhysBox>(map_object, "position_x");
 	float y_position = Misc::ParamFetch::Fetch<float, PhysBox>(map_object, "position_y");
+
+	float phys_density = Misc::ParamFetch::Fetch<float, PhysBox>(map_object, "phys_density");
+	float phys_friction = Misc::ParamFetch::Fetch<float, PhysBox>(map_object, "phys_friction");
+
+	bool phys_static = Misc::ParamFetch::Fetch<float, PhysBox>(map_object, "phys_static");
+
+	phys_object_handle->CreateRect(width, height, phys_density, phys_friction, phys_static);
 
 	X(x_position);
 	Y(y_position);
@@ -117,4 +132,8 @@ void PhysBox::SpecialHook(void* data) {
 	float player_angle = Misc::ParamFetch::Fetch<float, PhysBox>(map_object, "position_angle");
 
 	Angle(player_angle);
+}
+
+Components::PhysicsObject* PhysBox::GetPhysObject(void) {
+	return this->phys_object_handle;
 }

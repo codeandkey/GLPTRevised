@@ -19,7 +19,8 @@ namespace Actions {
 			PhysBoxDesc(float width, float height, bool static_object , float friction, float density) : width(width) , height(height) , friction(friction) , density(density) , static_object(static_object) {}
 		};
 
-		PhysBox(PhysBoxDesc phys_desc = PhysBoxDesc());
+		PhysBox(PhysBoxDesc phys_desc);
+		PhysBox(void);
 		~PhysBox(void);
 
 		float X(void);
@@ -42,6 +43,8 @@ namespace Actions {
 		void RotationalPush(float strength);
 
 		void SpecialHook(void* data);
+
+		Components::PhysicsObject* GetPhysObject(void);
 	private:
 
 		Components::PhysicsObject* phys_object_handle;

@@ -34,3 +34,7 @@ void PhysicsController::TaskStep(void) {
 void PhysicsController::RaycastWorld(b2RayCastInput input,b2RayCastCallback* target) {
 	phys_space_handle->RayCast(target,input.p1,input.p2);
 }
+
+void PhysicsController::QueryWorld(b2AABB area, b2QueryCallback* target) {
+	phys_space_handle->QueryAABB(target, area);
+}

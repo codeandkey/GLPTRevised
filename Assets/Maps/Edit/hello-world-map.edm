@@ -1,13 +1,19 @@
 ent_brush
 {
+	animation_filename Assets/Animations/brush.ani
 	animation_state StaticDirt
 	cb_height 1
 	cb_width 1
 	dim_height 1
-	dim_width 13
+	dim_width 6.5
+	phys_density 1
+	phys_friction 0.5
+	phys_static 1
 	position_angle 0
-	position_x -2
-	position_y -4
+	position_x 0
+	position_y -1.5
+	sprite_wrap_x 0
+	sprite_wrap_y 0
 }
 global_properties
 {
@@ -15,7 +21,16 @@ global_properties
 }
 ent_player
 {
+	animation_filename Assets/Animations/player.ani
+	animation_state Idle
+	dim_height 1
+	dim_width 1
+	phys_density 1
+	phys_friction 0.5
+	phys_static 0
 	position_angle 0
-	position_x -0.5
-	position_y -2
+	position_x -1.5
+	position_y 1
+	sprite_wrap_x 1
+	sprite_wrap_y 1
 }

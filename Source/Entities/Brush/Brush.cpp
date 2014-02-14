@@ -5,12 +5,9 @@ using namespace Neptune;
 using namespace Entities;
 
 void Brush::InitEvent(void) {
-	animation_handle = new Actions::AnimatedSprite("Assets/Animations/brush.ani",10.0f,1.0f);
-	animation_handle->SetShader(Tasks::RenderController::Handle()->GetShader("WorldShaderDefault"));
+	animation_handle = new Actions::AnimatedSprite(Tasks::RenderController::Handle()->GetShader("WorldShader"));
 
-	physbox_handle = new Actions::PhysBox(Actions::PhysBox::PhysBoxDesc(10.0f,1.0f,true));
-
-	physbox_handle->Y(-3.0f);
+	physbox_handle = new Actions::PhysBox();
 
 	AppendActionEvents(animation_handle);
 	AppendActionEvents(physbox_handle);

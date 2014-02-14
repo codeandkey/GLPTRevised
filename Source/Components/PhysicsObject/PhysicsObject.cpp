@@ -61,6 +61,7 @@ void PhysicsObject::CreateCircle(float radius,float density, float friction, boo
 	phys_shape_handle = new b2CircleShape;
 
 	phys_body_handle->CreateFixture(phys_shape_handle,density)->SetUserData((void*) this);
+	phys_body_handle->SetUserData((void*) this);
 }
 
 void PhysicsObject::GetPosition(float* x, float* y) {
@@ -130,4 +131,30 @@ void PhysicsObject::ApplyAngularForce(float strength) {
 
 bool PhysicsObject::TestPoint(float x, float y) {
 	return phys_body_handle->GetFixtureList()->TestPoint(b2Vec2(x,y));
+}
+
+void PhysicsObject::GetAllCollisions(std::function <bool (std::vector<std::pair<float,float>>)> callback_function) {
+	b2ContactEdge* contact_buffer;
+
+	contact_buffer = phys_body_handle->GetContactList();
+
+	while (contact_buffer) {
+		b2WorldManifold contact_manifold;
+		unsigned int point_count;
+
+		std::vector<std::pair<float, float>> contact_point_buffer;
+
+		point_count = contact_buffer->contact->GetManifold()->pointCount;
+		contact_buffer->contact->GetWorldManifold(&contact_manifold);
+
+		for (unsigned int i = 0; i < point_count; i++) {
+			contact_point_buffer.push_back(std::make_pair(contact_manifold.points[i].x, contact_manifold.points[i].y));
+		}
+
+		if (!callback_function(contact_point_buffer)) {
+			break;
+		}
+
+		contact_buffer = contact_buffer->next;
+	}
 }

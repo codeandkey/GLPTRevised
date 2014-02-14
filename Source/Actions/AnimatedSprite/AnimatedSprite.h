@@ -7,7 +7,7 @@
 namespace Actions {
 	class AnimatedSprite : public Neptune::ECS::Action {
 	public:
-		AnimatedSprite(std::string animation_filename,float width, float height,float wrap_amt_x=0.0f,float wrap_amt_y=0.0f);
+		AnimatedSprite(Neptune::Graphics::Shader<>* shader_handle);
 
 		void CreateHook(void);
 		void DrawHook(void);

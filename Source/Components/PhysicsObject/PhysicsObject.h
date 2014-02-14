@@ -1,6 +1,8 @@
 #pragma once
 
 #include <Box2D/Box2D.h>
+#include <functional>
+#include <vector>
 
 namespace Components {
 	class PhysicsObject {
@@ -28,6 +30,11 @@ namespace Components {
 		bool IsStaticBody(void);
 
 		bool TestPoint(float x, float y);
+
+		void GetAllCollisions(std::function<bool(std::vector<std::pair<float, float>>)>);
+		// The function passed to GetAllCollisions must return a bool.
+		// Returning false will break from the iteration, allowing for more efficiency.
+
 	private:
 		bool static_object;
 
