@@ -15,11 +15,14 @@ namespace Tasks {
 		void TaskStep(void);
 
 		void LoadMap(std::string filename);
+		void LoadDefaultMap(void);
 
 		template <typename T> void BindEntity(std::string key) {
 			entity_register_map[key]=&CreateNew<T>;
 		}
 	private:
+		std::string default_map_name;
+
 		std::map<std::string,Neptune::ECS::Entity*(*)(void)> entity_register_map;
 	};
 }

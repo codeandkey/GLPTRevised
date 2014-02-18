@@ -1,0 +1,9 @@
+# Scenery animation file.
+
+animation CloudLarge
+	Assets/Materials/Scene/bg_cloud.png 0
+end
+
+animation BackgroundStar
+	Assets/Materials/Scene/bg_stars.png 0
+end

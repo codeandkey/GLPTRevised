@@ -15,9 +15,31 @@ void ControlBind::LoadKeybinds(void) {
 	control_map.push_back(std::make_pair("Up", DIK_UP));
 	control_map.push_back(std::make_pair("Down", DIK_DOWN));
 	control_map.push_back(std::make_pair("A", DIK_A));
+	control_map.push_back(std::make_pair("B", DIK_B));
+	control_map.push_back(std::make_pair("C", DIK_C));
 	control_map.push_back(std::make_pair("D", DIK_D));
-	control_map.push_back(std::make_pair("W", DIK_W));
+	control_map.push_back(std::make_pair("E", DIK_E));
+	control_map.push_back(std::make_pair("F", DIK_F));
+	control_map.push_back(std::make_pair("G", DIK_G));
+	control_map.push_back(std::make_pair("H", DIK_H));
+	control_map.push_back(std::make_pair("I", DIK_I));
+	control_map.push_back(std::make_pair("J", DIK_J));
+	control_map.push_back(std::make_pair("K", DIK_K));
+	control_map.push_back(std::make_pair("L", DIK_L));
+	control_map.push_back(std::make_pair("M", DIK_M));
+	control_map.push_back(std::make_pair("N", DIK_N));
+	control_map.push_back(std::make_pair("O", DIK_O));
+	control_map.push_back(std::make_pair("P", DIK_P));
+	control_map.push_back(std::make_pair("Q", DIK_Q));
+	control_map.push_back(std::make_pair("R", DIK_R));
 	control_map.push_back(std::make_pair("S", DIK_S));
+	control_map.push_back(std::make_pair("T", DIK_T));
+	control_map.push_back(std::make_pair("U", DIK_U));
+	control_map.push_back(std::make_pair("V", DIK_V));
+	control_map.push_back(std::make_pair("W", DIK_W));
+	control_map.push_back(std::make_pair("X", DIK_X));
+	control_map.push_back(std::make_pair("Y", DIK_Y));
+	control_map.push_back(std::make_pair("Z", DIK_Z));
 	control_map.push_back(std::make_pair("Tilde",DIK_GRAVE));
 
 	control_map.push_back(std::make_pair("C_A", 1));
@@ -64,6 +86,10 @@ void ControlBind::ReloadControlsFromFile(void) {
 		config_string_value = Neptune::File::Config::Handle()->GetConfigValue<std::string>("PlayerKeyboardJump");
 		ActionMap::BindBooleanControl("PlayerJump", ActionMap::BinaryActionType::KeyboardButton, GetKey(config_string_value));
 	}
+
+	config_string_value = Neptune::File::Config::Handle()->GetConfigValue<std::string>("PlayerReset");
+
+	ActionMap::BindBooleanControl("PlayerReset", ActionMap::BinaryActionType::KeyboardButton, GetKey(config_string_value));
 
 	Neptune::File::Config::Release();
 }

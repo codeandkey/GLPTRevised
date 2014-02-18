@@ -7,6 +7,9 @@ RenderController::RenderController(bool debug_enabled) : Kernel::Task("_RenderCo
 
 	shader_map["WorldShader"] = new Graphics::Shader<>("Assets/Shaders/world_shader.hlsl","neptune_transform","neptune_texture");
 	shader_map["PostProcessBloom"] = new Graphics::Shader<>("Assets/Shaders/post_shader_bloom.hlsl", "neptune_transform", "neptune_texture");
+	shader_map["PostProcessBlur"] = new Graphics::Shader<>("Assets/Shaders/post_shader_blur.hlsl", "neptune_transform", "neptune_texture");
+	shader_map["WorldShaderScene"] = new Graphics::Shader<>("Assets/Shaders/world_scene_shader.hlsl", "neptune_transform", "neptune_texture");
+	shader_map["WorldShaderNoWrap"] = new Graphics::Shader<>("Assets/Shaders/world_shader_nowrap.hlsl", "neptune_transform", "neptune_texture");
 
 	if (OS::Timer::Exists()) {
 		fps_timestamp = OS::Timer::Handle()->GetStamp();
@@ -45,7 +48,7 @@ void RenderController::TaskStep(void) {
 	}
 
 	if (Graphics::Device::Exists() && Graphics::Screen::Exists()) {
-		Graphics::Screen::Handle()->ClearScreen(0.0f,0.5f,1.0f,0.0f);
+		Graphics::Screen::Handle()->ClearScreen(0.0f,0.0f,0.0f,0.0f);
 	} else {
 		Logging::GeneralLogger::Handle()->Log(Logging::LOG_USER | Logging::LOG_APP,"[Tasks::RenderController] Detected that graphics device or screen is missing. Cannot proceed.");
 		return;
@@ -101,14 +104,14 @@ Graphics::Shader<>* RenderController::GetShader(std::string name) {
 
 void RenderController::RenderThroughPipeline(void) {
 
-	render_target_texture_01->Clear(0.0f, 0.2f, 0.35f, 1.0f);
+	render_target_texture_01->Clear(0.0f, 0.0f, 0.0f, 1.0f);
 	render_target_texture_02->Clear(0.0f, 0.0f, 0.0f, 1.0f);
 
 	Graphics::Device::Handle()->SetRenderTarget(*render_target_texture_01, Graphics::Screen::Reference());
 
 	ECS::Manager::Handle()->CallVirtualEvent(&Neptune::ECS::Entity::EDraw);
 
-	Graphics::Device::Handle()->SetRenderTarget(Graphics::Screen::Reference(), NULL);
+	Graphics::Device::Handle()->SetRenderTarget(*render_target_texture_02, NULL);
 
 	screen_primitive->GetDrawable()->SetShader(GetShader("PostProcessBloom"));
 	screen_primitive->GetDrawable()->Texturize(render_target_texture_01);
@@ -122,9 +125,18 @@ void RenderController::RenderThroughPipeline(void) {
 
 	screen_primitive->GetDrawable()->Draw();
 
-	screen_primitive->GetDrawable()->Texturize(NULL);
 	GetShader("PostProcessBloom")->SetTextureVariable(NULL);
 	GetShader("PostProcessBloom")->ApplyPasses([=](void){});
+
+	Graphics::Device::Handle()->SetRenderTarget(Graphics::Screen::Reference(), NULL);
+
+	screen_primitive->GetDrawable()->Texturize(render_target_texture_02);
+
+	screen_primitive->GetDrawable()->SetShader(GetShader("PostProcessBlur"));
+	screen_primitive->GetDrawable()->Draw();
+
+	GetShader("PostProcessBlur")->SetTextureVariable(NULL);
+	GetShader("PostProcessBlur")->ApplyPasses([=](void){});
 }
 
 int RenderController::GetFPS(void) {

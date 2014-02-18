@@ -1,13 +1,24 @@
 #include "GameController.h"
 #include "../LogicController/LogicController.h"
 #include "../RenderController/RenderController.h"
+#include "../../Misc/ParamFetch.h"
 
 #include <fstream>
 
 using namespace Neptune;
 using namespace Tasks;
 
-GameController::GameController(void) : Kernel::Task("_GameController") {}
+GameController::GameController(void) : Kernel::Task("_GameController") {
+
+	new File::Config("Config/GLPT_game.cfg");
+
+	default_map_name = File::Config::Handle()->GetConfigValue<std::string>("DefaultMap");
+
+	default_map_name = "Assets/Maps/" + default_map_name + ".cdm";
+
+	File::Config::Release();
+
+}
 
 void GameController::TaskStep(void) {
 
@@ -15,6 +26,14 @@ void GameController::TaskStep(void) {
 		Kernel::Processor::Handle()->StopTaskLoop();
 	}
 
+}
+
+void GameController::LoadDefaultMap(void) {
+	if (default_map_name.size()) {
+		LoadMap(default_map_name);
+	} else {
+		Logging::GeneralLogger::Handle()->Log(Logging::LOG_USER | Logging::LOG_APP, "[GameController] Default map is not set!");
+	}
 }
 
 void GameController::LoadMap(std::string filename) {

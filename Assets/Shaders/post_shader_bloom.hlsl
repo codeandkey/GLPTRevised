@@ -38,11 +38,13 @@ Pixel RenderVertexShader(Vertex input) {
 
 float4 RenderPixelShader(Pixel input) : SV_Target{
 
-	float4 output_color = (float4) 0;
+	float4 output_color = neptune_texture.Sample(linear_sampler, input.texcoord);
+	output_color.a = 1.0f;
+
 	float4 output_sum = (float4) 0;
 	float bloom_distance = 2.0f;
-	float bloom_factor = 1.0f;
-	float bloom_interval = 0.002f;
+	float bloom_factor = 1.7f;
+	float bloom_interval = 0.003f;
 
 	for (float i = -bloom_distance; i <= bloom_distance; i += bloom_factor) {
 		for (float y = -bloom_distance; y <= bloom_distance; y += bloom_factor) {

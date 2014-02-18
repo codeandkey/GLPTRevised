@@ -5,8 +5,16 @@
 using namespace Neptune;
 using namespace Entities;
 
+static void AnimateValue(float* value, float target_value, float factor) {
+	*value = (target_value - *value) / factor + *value;
+}
+
 void Player::InitEvent(void) {
-	animation_sprite_handle = new Actions::AnimatedSprite(Tasks::RenderController::Handle()->GetShader("WorldShader"));
+	Graphics::Shader<>* world_shader = Tasks::RenderController::Handle()->GetShader("WorldShaderNoWrap");
+
+	sprite_core_handle = new Actions::AnimatedSprite(world_shader, "Assets/Animations/player.ani", "Core", 0.25f, 0.25f, 1.0f, 1.0f);
+	sprite_hat_handle = new Actions::AnimatedSprite(world_shader, "Assets/Animations/player.ani", "Hat", 0.25f, 0.25f, 1.0f, 1.0f);
+	sprite_rings_handle = new Actions::AnimatedSprite(world_shader, "Assets/Animations/player.ani", "Rings", 1.2f, 1.2f, 1.0f, 1.0f);
 
 	physbox_handle = new Actions::PhysBox();
 
@@ -14,14 +22,22 @@ void Player::InitEvent(void) {
 
 	AppendActionEvents(physbox_handle);
 	AppendActionEvents(lower_sensor);
-	AppendActionEvents(animation_sprite_handle);
+	AppendActionEvents(sprite_core_handle);
+	AppendActionEvents(sprite_hat_handle);
+	AppendActionEvents(sprite_rings_handle);
 
 	Identity("Player");
 }
 
 void Player::StepEvent(void) {
-	
-	// physbox_handle->Angle(0.0f);
+
+	physbox_handle->Angle(0.0f);
+
+	if (OS::ActionMap::GetBooleanPressed("PlayerReset")) {
+		physbox_handle->X(initial_x);
+		physbox_handle->Y(initial_y);
+		physbox_handle->Angle(0.0f);
+	}
 
 	if (IsGrounded()) {
 		if (OS::ActionMap::GetBooleanPressed("PlayerJump")) {
@@ -33,23 +49,67 @@ void Player::StepEvent(void) {
 }
 
 void Player::DrawEvent(void) {
-	// Synchronize the animation with the physbox.
 
-	animation_sprite_handle->x = physbox_handle->X();
-	animation_sprite_handle->y = physbox_handle->Y();
-	animation_sprite_handle->z=0.0f;
-	animation_sprite_handle->rotation=physbox_handle->Angle();
+	// Player sprite group animations.
 
-	// Graphics::Text::Handle()->SetTextFormat(0.0f, 0.0f, 0.0f, 1.0f, "Small Fonts", 15.0f, false);
+	const float sprite_core_animation_factor = 2.0f;
+	const float sprite_rings_animation_factor = 8.0f;
+	const float sprite_hat_animation_factor = 2.0f;
 
-	// Graphics::Text::Handle()->DrawString(Conversion::String::Format("player X : {}", physbox_handle->X()), 10, 100);
-	// Graphics::Text::Handle()->DrawString(Conversion::String::Format("player Y : {}", physbox_handle->Y()), 10, 130);
-	// Graphics::Text::Handle()->DrawString(Conversion::String::Format("player grounded : {}", IsGrounded()), 10, 160);
+	float player_x = X();
+	float player_y = Y();
+	float player_angle = Angle();
 
-	// Done synchronizing.
+	float target_sprite_core_x = player_x;
+	float target_sprite_core_y = player_y;
+	float target_sprite_core_angle = rings_angle_speed * 2.0f;
+
+	float target_hat_x = player_x - 0.1f;
+	float target_hat_y = player_y + 0.2f;
+	float target_hat_angle = rings_angle_speed * 2.0f;
+
+	float target_rings_x = player_x;
+	float target_rings_y = player_y;
+	float target_rings_angle_speed = -physbox_handle->XSpeed();
+
+	AnimateValue(&rings_angle_speed, target_rings_angle_speed, sprite_rings_animation_factor);
+
+	AnimateValue(&sprite_core_x, target_sprite_core_x, sprite_core_animation_factor);
+	AnimateValue(&sprite_core_y, target_sprite_core_y, sprite_core_animation_factor);
+	AnimateValue(&sprite_core_angle, target_sprite_core_angle, sprite_core_animation_factor);
+
+	AnimateValue(&sprite_hat_x, target_hat_x, sprite_hat_animation_factor);
+	AnimateValue(&sprite_hat_y, target_hat_y, sprite_hat_animation_factor);
+	AnimateValue(&sprite_hat_angle, target_hat_angle, sprite_hat_animation_factor);
+
+	AnimateValue(&sprite_rings_x, target_rings_x, sprite_core_animation_factor);
+	AnimateValue(&sprite_rings_y, target_rings_y, sprite_core_animation_factor);
+
+	sprite_rings_angle += rings_angle_speed;
+
+	// End player sprite group animations.
+
+	// Now, we change the animated sprites to exhibit our new values.
+
+	sprite_core_handle->x = sprite_core_x;
+	sprite_core_handle->y = sprite_core_y;
+	sprite_core_handle->rotation = sprite_core_angle;
+
+	sprite_hat_handle->x = sprite_hat_x;
+	sprite_hat_handle->y = sprite_hat_y;
+	sprite_hat_handle->z = -0.1f;
+	sprite_hat_handle->rotation = sprite_hat_angle;
+
+	sprite_rings_handle->x = sprite_rings_x;
+	sprite_rings_handle->y = sprite_rings_y;
+	sprite_rings_handle->z = 0.1f;
+	sprite_rings_handle->rotation = sprite_rings_angle;
 }
 
 bool Player::IsGrounded(void) {
+
+	// Player grounding check algorithm.
+	// Uses contact point checking against bottom line of player.
 
 	SetGrounded(false);
 
@@ -116,8 +176,17 @@ bool Player::IsGrounded(void) {
 }
 
 void Player::DestroyEvent(void) {
-	if (animation_sprite_handle) delete animation_sprite_handle;
+	if (sprite_core_handle) delete sprite_core_handle;
+	if (sprite_hat_handle) delete sprite_core_handle;
+	if (sprite_rings_handle) delete sprite_core_handle;
 	if (physbox_handle) delete physbox_handle;
+}
+
+void Player::SpecialEvent(void*) {
+	
+	initial_x = X();
+	initial_y = Y();
+
 }
 
 float Player::X(void) {

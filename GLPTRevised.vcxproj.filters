@@ -60,6 +60,9 @@
     <ClCompile Include="Source\Actions\PhysSensor\PhysSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Entities\Scene\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GLPT.h">
@@ -122,9 +125,15 @@
     <ClInclude Include="Source\Actions\PhysCircle\PhysCircle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Entities\Scene\Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shaders\world_shader.hlsl" />
+    <FxCompile Include="Assets\Shaders\post_shader_blur.hlsl" />
+    <FxCompile Include="Assets\Shaders\world_scene_shader.hlsl" />
+    <FxCompile Include="Assets\Shaders\world_shader_nowrap.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Animations\player.ani" />
@@ -132,5 +141,7 @@
     <None Include="Config\GLPT_controls.cfg" />
     <None Include="Source\Tasks\ViewController\ViewController.h" />
     <None Include="Assets\Shaders\post_shader_bloom.hlsl" />
+    <None Include="Config\GLPT_game.cfg" />
+    <None Include="Assets\Animations\scene.ani" />
   </ItemGroup>
 </Project>

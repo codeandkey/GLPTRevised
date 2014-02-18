@@ -9,9 +9,9 @@ struct Pixel {
 };
 
 SamplerState linear_sampler {
-	Filter=ANISOTROPIC;
-	AddressU=Wrap;
-	AddressV=Clamp;
+	Filter = ANISOTROPIC;
+	AddressU = Wrap;
+	AddressV = Clamp;
 };
 
 BlendState blend_normal {
@@ -27,6 +27,9 @@ BlendState blend_normal {
 matrix neptune_transform;
 Texture2D neptune_texture;
 
+bool disable_hwrap;
+bool disable_vwrap;
+
 Pixel RenderVertexShader (Vertex input) {
 	Pixel output;
 
@@ -37,7 +40,9 @@ Pixel RenderVertexShader (Vertex input) {
 }
 
 float4 RenderPixelShader(Pixel input) : SV_Target {
-	float4 output = neptune_texture.Sample(linear_sampler,input.texcoord);
+	float4 output = neptune_texture.Sample(linear_sampler, input.texcoord);
+
+	if (!output.a) discard;
 
 	return output;
 }

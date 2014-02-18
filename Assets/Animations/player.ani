@@ -1,6 +1,6 @@
 # Player main animation definition.
 
-animation Idle
+animation Core
 	Assets/Materials/Player/player_core.png 0
 end
 
@@ -8,6 +8,6 @@ animation Rings
 	Assets/Materials/Player/player_orb.png 0
 end
 
-animaton Hat
+animation Hat
 	Assets/Materials/Player/hat.png 0
 end

@@ -52,11 +52,13 @@ int main(void) {
 
 	new Kernel::Processor;
 
-	new OS::Window(glpt_window_desc,"GLPTRevised");
+	new OS::Window(glpt_window_desc, "GLPTRevised");
 	new OS::Input;
 	new OS::Timer;
 
-	new Graphics::Device(true);
+	new Audio::AudioManager;
+
+	new Graphics::Device(false);
 	new Graphics::Screen;
 
 	new Graphics::Camera;
@@ -75,7 +77,9 @@ int main(void) {
 	Tasks::GameController::Handle()->BindEntity<Entities::Player>("ent_player");
 	Tasks::GameController::Handle()->BindEntity<Entities::Brush>("ent_brush");
 
-	Tasks::GameController::Handle()->LoadMap("Assets/Maps/hello-world-map.cdm");
+	Tasks::GameController::Handle()->LoadDefaultMap();
+
+	ECS::Manager::Handle()->Push(new Entities::Scene(Entities::Scene::SceneDarkCloudy));
 
 	Kernel::Processor::Handle()->StartTaskLoop();
 
@@ -83,6 +87,7 @@ int main(void) {
 	OS::Window::Release();
 	OS::Timer::Release();
 	OS::Input::Release();
+	Audio::AudioManager::Release();
 	Graphics::Screen::Release();
 	Graphics::Device::Release();
 	Graphics::Text::Release();

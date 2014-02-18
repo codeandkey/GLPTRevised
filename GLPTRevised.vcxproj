@@ -18,6 +18,7 @@
     <ClCompile Include="Source\Components\PhysicsObject\PhysicsObject.cpp" />
     <ClCompile Include="Source\Entities\Brush\Brush.cpp" />
     <ClCompile Include="Source\Entities\Player\Player.cpp" />
+    <ClCompile Include="Source\Entities\Scene\Scene.cpp" />
     <ClCompile Include="Source\GLPT.cpp" />
     <ClCompile Include="Source\Components\Animation\Animation.cpp" />
     <ClCompile Include="Source\Misc\ControlBind.cpp" />
@@ -39,6 +40,7 @@
     <ClInclude Include="Source\Entities\EntityModule.h" />
     <ClInclude Include="Source\Entities\Player\Player.h" />
     <ClInclude Include="Source\Components\TemplateModule.h" />
+    <ClInclude Include="Source\Entities\Scene\Scene.h" />
     <ClInclude Include="Source\GLPT.h" />
     <ClInclude Include="Source\Components\Animation\Animation.h" />
     <ClInclude Include="Source\Misc\ControlBind.h" />
@@ -50,10 +52,24 @@
     <ClInclude Include="Source\Tasks\TaskModule.h" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Assets\Shaders\world_shader_nowrap.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <None Include="Assets\Animations\scene.ani" />
     <None Include="Assets\Shaders\post_shader_bloom.hlsl">
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>
+    <FxCompile Include="Assets\Shaders\post_shader_blur.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="Assets\Shaders\world_scene_shader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </FxCompile>
     <FxCompile Include="Assets\Shaders\world_shader.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -62,6 +78,7 @@
   <ItemGroup>
     <None Include="Assets\Animations\player.ani" />
     <None Include="Config\GLPT_controls.cfg" />
+    <None Include="Config\GLPT_game.cfg" />
     <None Include="Config\GLPT_graphics.cfg" />
     <None Include="Source\Tasks\ViewController\ViewController.h" />
   </ItemGroup>

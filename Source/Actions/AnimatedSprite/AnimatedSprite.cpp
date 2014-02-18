@@ -8,6 +8,26 @@ using namespace Actions;
 AnimatedSprite::AnimatedSprite(Graphics::Shader<>* shader_handle) {
 	animation_handle = NULL;
 	this->shader_handle = shader_handle;
+
+	loading_from_mapfile = true;
+}
+
+AnimatedSprite::AnimatedSprite(Neptune::Graphics::Shader<>* shader_handle, std::string animation_filename, std::string initial_state, float width, float height, float wrap_x, float wrap_y) {
+	animation_handle = new Components::Animation(animation_filename);
+	this->shader_handle = shader_handle;
+
+	x = y = z = 0.0f;
+
+	if (!wrap_x) wrap_x = width;
+	if (!wrap_y) wrap_y = height;
+
+	primitive_handle = Resource::Primitive<>::CreateXYRect(width, height, wrap_x, wrap_y);
+
+	primitive_handle->GetDrawable()->SetShader(shader_handle);
+
+	animation_handle->SetAnimationState(initial_state);
+
+	loading_from_mapfile = false;
 }
 
 void AnimatedSprite::CreateHook(void) {
@@ -36,6 +56,8 @@ void AnimatedSprite::DrawHook(void) {
 }
 
 void AnimatedSprite::SpecialHook(void* parameter) {
+
+	if (!loading_from_mapfile) return;
 
 	std::map<std::string, std::string> map_object = *((std::map<std::string, std::string>*) parameter);
 
